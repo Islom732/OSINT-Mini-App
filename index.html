@@ -15,27 +15,23 @@
       font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
       background: #0a0a14;
       background-image: radial-gradient(ellipse at 20% 50%, #1a0a2e 0%, transparent 60%),
-                        radial-gradient(ellipse at 80% 50%, #0a1a2e 0%, transparent 60%),
-                        radial-gradient(ellipse at 50% 0%, #1a0a2e 0%, transparent 40%);
+                        radial-gradient(ellipse at 80% 50%, #0a1a2e 0%, transparent 60%);
       min-height: 100vh;
       padding: 16px;
       color: #f0f0ff;
     }
 
-    /* ГЛАВНАЯ КАРТОЧКА — СТЕКЛО */
     .glass {
       background: rgba(20, 20, 40, 0.65);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       border-radius: 32px;
       border: 1px solid rgba(255, 255, 255, 0.06);
-      box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6), inset 0 0 80px rgba(120, 80, 255, 0.03);
+      box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6);
       padding: 24px;
       margin-bottom: 16px;
-      transition: all 0.3s ease;
     }
 
-    /* ХЕДЕР */
     .header {
       display: flex;
       justify-content: space-between;
@@ -48,7 +44,6 @@
       background: linear-gradient(135deg, #a78bfa, #7c3aed);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      letter-spacing: -0.5px;
     }
     .badge {
       background: rgba(120, 80, 255, 0.2);
@@ -58,10 +53,8 @@
       font-size: 11px;
       font-weight: 600;
       color: #a78bfa;
-      letter-spacing: 0.5px;
     }
 
-    /* БАЛАНС */
     .balance-box {
       display: flex;
       align-items: center;
@@ -94,7 +87,6 @@
       border: 1px solid rgba(255,255,255,0.04);
     }
 
-    /* СЕТКА КНОПОК */
     .grid {
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
@@ -107,9 +99,8 @@
       border-radius: 18px;
       padding: 16px 6px;
       text-align: center;
-      transition: all 0.15s ease;
       cursor: pointer;
-      backdrop-filter: blur(4px);
+      transition: all 0.15s ease;
     }
     .btn:active {
       transform: scale(0.94);
@@ -125,10 +116,8 @@
       color: #94a3b8;
       margin-top: 4px;
       font-weight: 500;
-      letter-spacing: 0.2px;
     }
 
-    /* МЕГА-КНОПКА */
     .btn-mega {
       grid-column: span 3;
       background: linear-gradient(135deg, rgba(120, 80, 255, 0.15), rgba(80, 60, 200, 0.05));
@@ -151,10 +140,8 @@
       font-size: 13px;
       color: #c4b5fd;
       font-weight: 600;
-      margin-top: 2px;
     }
 
-    /* ПОЛЕ ВВОДА */
     .input-wrap {
       display: flex;
       align-items: center;
@@ -163,11 +150,10 @@
       border-radius: 60px;
       padding: 4px 4px 4px 20px;
       border: 1px solid rgba(255, 255, 255, 0.04);
-      transition: all 0.3s ease;
+      margin: 18px 0 6px 0;
     }
     .input-wrap:focus-within {
       border-color: rgba(120, 80, 255, 0.4);
-      box-shadow: 0 0 20px rgba(120, 80, 255, 0.05);
     }
     .input-wrap input {
       flex: 1;
@@ -177,7 +163,6 @@
       font-size: 15px;
       outline: none;
       padding: 14px 0;
-      font-weight: 400;
     }
     .input-wrap input::placeholder {
       color: #4a4a6a;
@@ -199,7 +184,6 @@
       opacity: 0.85;
     }
 
-    /* РЕЗУЛЬТАТ */
     .result {
       background: rgba(0, 0, 0, 0.3);
       border-radius: 20px;
@@ -215,7 +199,6 @@
       line-height: 1.6;
     }
 
-    /* КНОПКИ ПОКУПКИ */
     .buy-row {
       display: flex;
       gap: 10px;
@@ -235,7 +218,6 @@
       color: #fbbf24;
       cursor: pointer;
       transition: all 0.15s ease;
-      backdrop-filter: blur(4px);
     }
     .buy-btn:active {
       transform: scale(0.94);
@@ -254,36 +236,22 @@
       font-size: 11px;
       color: #3a3a5a;
       margin-top: 20px;
-      letter-spacing: 0.3px;
-    }
-
-    /* АНИМАЦИЯ ПРИ ЗАГРУЗКЕ */
-    .fade-in {
-      animation: fadeIn 0.4s ease;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(12px); }
-      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
 <body>
 
-<div class="glass fade-in">
-
-  <!-- ХЕДЕР -->
+<div class="glass">
   <div class="header">
     <h1>🔍 OSINT PRO</h1>
     <span class="badge">⚡ v6.0</span>
   </div>
 
-  <!-- БАЛАНС -->
   <div class="balance-box">
     <div class="stars">⭐ 42 <span>звезды</span></div>
     <div class="requests">📊 100 запросов</div>
   </div>
 
-  <!-- СЕТКА КНОПОК -->
   <div class="grid">
     <div class="btn" onclick="send('phone')"><span class="icon">📱</span><span class="label">Телефон</span></div>
     <div class="btn" onclick="send('email')"><span class="icon">📧</span><span class="label">Email</span></div>
@@ -297,19 +265,14 @@
     </div>
   </div>
 
-  <!-- ПОЛЕ ВВОДА -->
-  <div style="margin: 18px 0 6px 0;">
-    <div class="input-wrap">
-      <input type="text" id="query" placeholder="Введи @username или +79161234567">
-      <button onclick="go()">🔍 Найти</button>
-    </div>
+  <div class="input-wrap">
+    <input type="text" id="query" placeholder="Введи @username или +79161234567">
+    <button onclick="go()">🔍 Найти</button>
   </div>
 
-  <!-- РЕЗУЛЬТАТ -->
   <div class="result" id="result">📌 Результат появится здесь...</div>
 </div>
 
-<!-- КАРТОЧКА ПОКУПКИ -->
 <div class="glass">
   <div class="buy-row">
     <div class="buy-btn" onclick="buy(10)">⭐ 10 <small>+5 запросов</small></div>
@@ -318,20 +281,15 @@
   </div>
 </div>
 
-<div class="footer">
-  ⚡ Работает через открытые источники
-</div>
+<div class="footer">⚡ Работает через открытые источники</div>
 
 <script>
   function send(mode) {
     const q = document.getElementById('query').value.trim();
-    if (!q) { 
-      document.getElementById('result').innerText = '⚠️ Введи данные для поиска!';
-      return; 
-    }
+    if (!q) { document.getElementById('result').innerText = '⚠️ Введи данные!'; return; }
     if (window.Telegram && Telegram.WebApp) {
       Telegram.WebApp.sendData(JSON.stringify({ mode, query: q }));
-      document.getElementById('result').innerText = '⏳ Отправлено... жди ответ';
+      document.getElementById('result').innerText = '⏳ Отправлено...';
     } else {
       document.getElementById('result').innerText = '✅ Данные отправлены в бота!';
     }
@@ -339,10 +297,7 @@
 
   function go() {
     const q = document.getElementById('query').value.trim();
-    if (!q) { 
-      document.getElementById('result').innerText = '⚠️ Введи запрос!';
-      return; 
-    }
+    if (!q) { document.getElementById('result').innerText = '⚠️ Введи запрос!'; return; }
     let mode = 'auto';
     if (/^\+?\d{10,15}$/.test(q)) mode = 'phone';
     else if (/@/.test(q)) mode = 'username';
@@ -364,7 +319,6 @@
     }
   }
 
-  // Приём данных из бота
   if (window.Telegram && Telegram.WebApp) {
     Telegram.WebApp.onEvent('data', (data) => {
       document.getElementById('result').innerText = data;
