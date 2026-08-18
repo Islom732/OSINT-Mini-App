@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OSINT Бот v6.0</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0f0f1a;
+            color: #e0e0e0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .header {
+            background: linear-gradient(145deg, #1a1a2e, #16213e);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid #2a2a4a;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+        }
+        .header h1 {
+            font-size: 24px;
+            color: #7f5af0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .header .status {
+            background: #1f1f3a;
+            border-radius: 30px;
+            padding: 8px 16px;
+            font-size: 14px;
+            color: #a0a0c0;
+            border: 1px solid #2a2a50;
+            display: inline-block;
+            margin-top: 10px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .card {
+            background: #18182b;
+            border-radius: 16px;
+            padding: 16px;
+            border: 1px solid #282850;
+            transition: all 0.2s;
+            cursor: pointer;
+            text-align: center;
+        }
+        .card:active {
+            transform: scale(0.96);
+            background: #22224a;
+        }
+        .card .icon {
+            font-size: 32px;
+            margin-bottom: 6px;
+        }
+        .card .label {
+            font-size: 13px;
+            color: #b0b0d0;
+        }
+        .input-area {
+            background: #18182b;
+            border-radius: 16px;
+            padding: 16px;
+            border: 1px solid #282850;
+            margin-bottom: 20px;
+        }
+        .input-area input {
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            border: none;
+            background: #0f0f1a;
+            color: #fff;
+            font-size: 16px;
+            outline: 1px solid #2a2a50;
+        }
+        .input-area input:focus {
+            outline: 1px solid #7f5af0;
+        }
+        .btn-primary {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            background: #7f5af0;
+            color: #fff;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 10px;
+        }
+        .btn-primary:active {
+            transform: scale(0.96);
+            opacity: 0.8;
+        }
+        .result {
+            background: #18182b;
+            border-radius: 16px;
+            padding: 16px;
+            border: 1px solid #282850;
+            margin-top: 10px;
+            min-height: 80px;
+            white-space: pre-wrap;
+            font-size: 14px;
+            color: #c0c0e0;
+        }
+        .footer {
+            margin-top: auto;
+            text-align: center;
+            font-size: 12px;
+            color: #404060;
+            padding: 20px 0;
+        }
+        .badge {
+            background: #2a2a50;
+            border-radius: 20px;
+            padding: 4px 14px;
+            font-size: 12px;
+            color: #a0a0c0;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🔍 OSINT ПРО v6.0</h1>
+        <div class="status">
+            👤 @user · ⭐ 42 звёзды · 📊 100/100 запросов
+        </div>
+    </div>
+
+    <div class="grid">
+        <div class="card" onclick="sendData('phone')">
+            <div class="icon">📱</div>
+            <div class="label">Телефон</div>
+        </div>
+        <div class="card" onclick="sendData('email')">
+            <div class="icon">📧</div>
+            <div class="label">Email</div>
+        </div>
+        <div class="card" onclick="sendData('username')">
+            <div class="icon">👤</div>
+            <div class="label">Юзернейм</div>
+        </div>
+        <div class="card" onclick="sendData('ip')">
+            <div class="icon">🌐</div>
+            <div class="label">IP-адрес</div>
+        </div>
+        <div class="card" onclick="sendData('telegram')">
+            <div class="icon">📡</div>
+            <div class="label">Telegram</div>
+        </div>
+        <div class="card" onclick="sendData('tg_phone')">
+            <div class="icon">🔓</div>
+            <div class="label">Номер по юзу</div>
+        </div>
+        <div class="card" style="grid-column: span 2; background: #1f1f3a;" onclick="sendData('mega')">
+            <div class="icon">🚀</div>
+            <div class="label">Мега-поиск (500+ сайтов)</div>
+        </div>
+    </div>
+
+    <div class="input-area">
+        <input type="text" id="queryInput" placeholder="Введи запрос... Например: @durov или +79161234567">
+        <button class="btn-primary" onclick="sendQuery()">🔍 Найти</button>
+    </div>
+
+    <div class="result" id="resultArea">
+        📌 Здесь будет результат поиска...
+    </div>
+
+    <div class="footer">
+        ⚡ Работает через открытые источники · v6.0
+    </div>
+
+    <script>
+        // Отправка данных в Telegram Mini App
+        function sendData(mode) {
+            const input = document.getElementById('queryInput');
+            const value = input.value.trim();
+            if (!value) {
+                alert('Введи данные для поиска!');
+                return;
+            }
+            // Отправляем данные в бота через WebApp
+            if (window.Telegram && Telegram.WebApp) {
+                Telegram.WebApp.sendData(JSON.stringify({ mode, query: value }));
+            } else {
+                // fallback — копируем в буфер
+                navigator.clipboard.writeText(`/${mode} ${value}`);
+                document.getElementById('resultArea').innerText = '✅ Данные скопированы! Вставь в бота.';
+            }
+        }
+
+        function sendQuery() {
+            const input = document.getElementById('queryInput');
+            const value = input.value.trim();
+            if (!value) {
+                alert('Введи запрос!');
+                return;
+            }
+            // Автоопределение
+            let mode = 'auto';
+            if (/^\+?\d{10,15}$/.test(value)) mode = 'phone';
+            else if (/@/.test(value)) mode = 'username';
+            else if (/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/.test(value)) mode = 'ip';
+            
+            if (window.Telegram && Telegram.WebApp) {
+                Telegram.WebApp.sendData(JSON.stringify({ mode, query: value }));
+            } else {
+                navigator.clipboard.writeText(`/${mode} ${value}`);
+                document.getElementById('resultArea').innerText = '✅ Данные скопированы! Вставь в бота.';
+            }
+        }
+
+        // Показываем результат из бота
+        if (window.Telegram && Telegram.WebApp) {
+            Telegram.WebApp.onEvent('mainButtonClicked', function() {
+                // Можно обработать
+            });
+        }
+    </script>
+</body>
+</html>
