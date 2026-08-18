@@ -1,238 +1,376 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OSINT Бот v6.0</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #0f0f1a;
-            color: #e0e0e0;
-            padding: 20px;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-        .header {
-            background: linear-gradient(145deg, #1a1a2e, #16213e);
-            border-radius: 20px;
-            padding: 20px;
-            margin-bottom: 20px;
-            border: 1px solid #2a2a4a;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-        }
-        .header h1 {
-            font-size: 24px;
-            color: #7f5af0;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .header .status {
-            background: #1f1f3a;
-            border-radius: 30px;
-            padding: 8px 16px;
-            font-size: 14px;
-            color: #a0a0c0;
-            border: 1px solid #2a2a50;
-            display: inline-block;
-            margin-top: 10px;
-        }
-        .grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-        .card {
-            background: #18182b;
-            border-radius: 16px;
-            padding: 16px;
-            border: 1px solid #282850;
-            transition: all 0.2s;
-            cursor: pointer;
-            text-align: center;
-        }
-        .card:active {
-            transform: scale(0.96);
-            background: #22224a;
-        }
-        .card .icon {
-            font-size: 32px;
-            margin-bottom: 6px;
-        }
-        .card .label {
-            font-size: 13px;
-            color: #b0b0d0;
-        }
-        .input-area {
-            background: #18182b;
-            border-radius: 16px;
-            padding: 16px;
-            border: 1px solid #282850;
-            margin-bottom: 20px;
-        }
-        .input-area input {
-            width: 100%;
-            padding: 14px;
-            border-radius: 12px;
-            border: none;
-            background: #0f0f1a;
-            color: #fff;
-            font-size: 16px;
-            outline: 1px solid #2a2a50;
-        }
-        .input-area input:focus {
-            outline: 1px solid #7f5af0;
-        }
-        .btn-primary {
-            width: 100%;
-            padding: 14px;
-            border: none;
-            border-radius: 12px;
-            background: #7f5af0;
-            color: #fff;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            margin-top: 10px;
-        }
-        .btn-primary:active {
-            transform: scale(0.96);
-            opacity: 0.8;
-        }
-        .result {
-            background: #18182b;
-            border-radius: 16px;
-            padding: 16px;
-            border: 1px solid #282850;
-            margin-top: 10px;
-            min-height: 80px;
-            white-space: pre-wrap;
-            font-size: 14px;
-            color: #c0c0e0;
-        }
-        .footer {
-            margin-top: auto;
-            text-align: center;
-            font-size: 12px;
-            color: #404060;
-            padding: 20px 0;
-        }
-        .badge {
-            background: #2a2a50;
-            border-radius: 20px;
-            padding: 4px 14px;
-            font-size: 12px;
-            color: #a0a0c0;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>OSINT PRO</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+      background: #0a0a14;
+      background-image: radial-gradient(ellipse at 20% 50%, #1a0a2e 0%, transparent 60%),
+                        radial-gradient(ellipse at 80% 50%, #0a1a2e 0%, transparent 60%),
+                        radial-gradient(ellipse at 50% 0%, #1a0a2e 0%, transparent 40%);
+      min-height: 100vh;
+      padding: 16px;
+      color: #f0f0ff;
+    }
+
+    /* ГЛАВНАЯ КАРТОЧКА — СТЕКЛО */
+    .glass {
+      background: rgba(20, 20, 40, 0.65);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-radius: 32px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6), inset 0 0 80px rgba(120, 80, 255, 0.03);
+      padding: 24px;
+      margin-bottom: 16px;
+      transition: all 0.3s ease;
+    }
+
+    /* ХЕДЕР */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .header h1 {
+      font-size: 22px;
+      font-weight: 700;
+      background: linear-gradient(135deg, #a78bfa, #7c3aed);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.5px;
+    }
+    .badge {
+      background: rgba(120, 80, 255, 0.2);
+      border: 1px solid rgba(120, 80, 255, 0.3);
+      padding: 4px 14px;
+      border-radius: 60px;
+      font-size: 11px;
+      font-weight: 600;
+      color: #a78bfa;
+      letter-spacing: 0.5px;
+    }
+
+    /* БАЛАНС */
+    .balance-box {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 20px;
+      padding: 16px 20px;
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      margin-bottom: 20px;
+    }
+    .balance-box .stars {
+      font-size: 28px;
+      font-weight: 700;
+      color: #fbbf24;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .balance-box .stars span {
+      font-size: 14px;
+      color: #94a3b8;
+      font-weight: 400;
+    }
+    .balance-box .requests {
+      font-size: 14px;
+      color: #94a3b8;
+      background: rgba(255,255,255,0.04);
+      padding: 6px 16px;
+      border-radius: 60px;
+      border: 1px solid rgba(255,255,255,0.04);
+    }
+
+    /* СЕТКА КНОПОК */
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+    }
+
+    .btn {
+      background: rgba(30, 30, 60, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      border-radius: 18px;
+      padding: 16px 6px;
+      text-align: center;
+      transition: all 0.15s ease;
+      cursor: pointer;
+      backdrop-filter: blur(4px);
+    }
+    .btn:active {
+      transform: scale(0.94);
+      background: rgba(120, 80, 255, 0.15);
+      border-color: rgba(120, 80, 255, 0.3);
+    }
+    .btn .icon {
+      font-size: 26px;
+      display: block;
+    }
+    .btn .label {
+      font-size: 11px;
+      color: #94a3b8;
+      margin-top: 4px;
+      font-weight: 500;
+      letter-spacing: 0.2px;
+    }
+
+    /* МЕГА-КНОПКА */
+    .btn-mega {
+      grid-column: span 3;
+      background: linear-gradient(135deg, rgba(120, 80, 255, 0.15), rgba(80, 60, 200, 0.05));
+      border: 1px solid rgba(120, 80, 255, 0.2);
+      padding: 18px;
+      border-radius: 18px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .btn-mega:active {
+      transform: scale(0.96);
+      background: rgba(120, 80, 255, 0.25);
+    }
+    .btn-mega .icon {
+      font-size: 26px;
+      display: block;
+    }
+    .btn-mega .label {
+      font-size: 13px;
+      color: #c4b5fd;
+      font-weight: 600;
+      margin-top: 2px;
+    }
+
+    /* ПОЛЕ ВВОДА */
+    .input-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(0, 0, 0, 0.35);
+      border-radius: 60px;
+      padding: 4px 4px 4px 20px;
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      transition: all 0.3s ease;
+    }
+    .input-wrap:focus-within {
+      border-color: rgba(120, 80, 255, 0.4);
+      box-shadow: 0 0 20px rgba(120, 80, 255, 0.05);
+    }
+    .input-wrap input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: #f0f0ff;
+      font-size: 15px;
+      outline: none;
+      padding: 14px 0;
+      font-weight: 400;
+    }
+    .input-wrap input::placeholder {
+      color: #4a4a6a;
+    }
+    .input-wrap button {
+      background: linear-gradient(135deg, #7c3aed, #6d28d9);
+      border: none;
+      border-radius: 60px;
+      padding: 12px 24px;
+      color: #fff;
+      font-weight: 600;
+      font-size: 15px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+    .input-wrap button:active {
+      transform: scale(0.94);
+      opacity: 0.85;
+    }
+
+    /* РЕЗУЛЬТАТ */
+    .result {
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 20px;
+      padding: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.03);
+      min-height: 60px;
+      font-size: 14px;
+      color: #b0b0d0;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      margin-top: 14px;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      line-height: 1.6;
+    }
+
+    /* КНОПКИ ПОКУПКИ */
+    .buy-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .buy-btn {
+      flex: 1;
+      min-width: 90px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 60px;
+      padding: 12px 16px;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 600;
+      color: #fbbf24;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      backdrop-filter: blur(4px);
+    }
+    .buy-btn:active {
+      transform: scale(0.94);
+      background: rgba(251, 191, 36, 0.1);
+      border-color: #fbbf24;
+    }
+    .buy-btn small {
+      display: block;
+      font-size: 10px;
+      color: #6a6a8a;
+      font-weight: 400;
+    }
+
+    .footer {
+      text-align: center;
+      font-size: 11px;
+      color: #3a3a5a;
+      margin-top: 20px;
+      letter-spacing: 0.3px;
+    }
+
+    /* АНИМАЦИЯ ПРИ ЗАГРУЗКЕ */
+    .fade-in {
+      animation: fadeIn 0.4s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
 </head>
 <body>
-    <div class="header">
-        <h1>🔍 OSINT ПРО v6.0</h1>
-        <div class="status">
-            👤 @user · ⭐ 42 звёзды · 📊 100/100 запросов
-        </div>
+
+<div class="glass fade-in">
+
+  <!-- ХЕДЕР -->
+  <div class="header">
+    <h1>🔍 OSINT PRO</h1>
+    <span class="badge">⚡ v6.0</span>
+  </div>
+
+  <!-- БАЛАНС -->
+  <div class="balance-box">
+    <div class="stars">⭐ 42 <span>звезды</span></div>
+    <div class="requests">📊 100 запросов</div>
+  </div>
+
+  <!-- СЕТКА КНОПОК -->
+  <div class="grid">
+    <div class="btn" onclick="send('phone')"><span class="icon">📱</span><span class="label">Телефон</span></div>
+    <div class="btn" onclick="send('email')"><span class="icon">📧</span><span class="label">Email</span></div>
+    <div class="btn" onclick="send('username')"><span class="icon">👤</span><span class="label">Юзернейм</span></div>
+    <div class="btn" onclick="send('ip')"><span class="icon">🌐</span><span class="label">IP</span></div>
+    <div class="btn" onclick="send('telegram')"><span class="icon">📡</span><span class="label">Telegram</span></div>
+    <div class="btn" onclick="send('tg_phone')"><span class="icon">🔓</span><span class="label">Номер по юзу</span></div>
+    <div class="btn-mega" onclick="send('mega')">
+      <span class="icon">🚀</span>
+      <span class="label">Мега-поиск (500+ сайтов)</span>
     </div>
+  </div>
 
-    <div class="grid">
-        <div class="card" onclick="sendData('phone')">
-            <div class="icon">📱</div>
-            <div class="label">Телефон</div>
-        </div>
-        <div class="card" onclick="sendData('email')">
-            <div class="icon">📧</div>
-            <div class="label">Email</div>
-        </div>
-        <div class="card" onclick="sendData('username')">
-            <div class="icon">👤</div>
-            <div class="label">Юзернейм</div>
-        </div>
-        <div class="card" onclick="sendData('ip')">
-            <div class="icon">🌐</div>
-            <div class="label">IP-адрес</div>
-        </div>
-        <div class="card" onclick="sendData('telegram')">
-            <div class="icon">📡</div>
-            <div class="label">Telegram</div>
-        </div>
-        <div class="card" onclick="sendData('tg_phone')">
-            <div class="icon">🔓</div>
-            <div class="label">Номер по юзу</div>
-        </div>
-        <div class="card" style="grid-column: span 2; background: #1f1f3a;" onclick="sendData('mega')">
-            <div class="icon">🚀</div>
-            <div class="label">Мега-поиск (500+ сайтов)</div>
-        </div>
+  <!-- ПОЛЕ ВВОДА -->
+  <div style="margin: 18px 0 6px 0;">
+    <div class="input-wrap">
+      <input type="text" id="query" placeholder="Введи @username или +79161234567">
+      <button onclick="go()">🔍 Найти</button>
     </div>
+  </div>
 
-    <div class="input-area">
-        <input type="text" id="queryInput" placeholder="Введи запрос... Например: @durov или +79161234567">
-        <button class="btn-primary" onclick="sendQuery()">🔍 Найти</button>
-    </div>
+  <!-- РЕЗУЛЬТАТ -->
+  <div class="result" id="result">📌 Результат появится здесь...</div>
+</div>
 
-    <div class="result" id="resultArea">
-        📌 Здесь будет результат поиска...
-    </div>
+<!-- КАРТОЧКА ПОКУПКИ -->
+<div class="glass">
+  <div class="buy-row">
+    <div class="buy-btn" onclick="buy(10)">⭐ 10 <small>+5 запросов</small></div>
+    <div class="buy-btn" onclick="buy(50)">⭐ 50 <small>+30 запросов</small></div>
+    <div class="buy-btn" onclick="buy(100)">⭐ 100 <small>+70 запросов</small></div>
+  </div>
+</div>
 
-    <div class="footer">
-        ⚡ Работает через открытые источники · v6.0
-    </div>
+<div class="footer">
+  ⚡ Работает через открытые источники
+</div>
 
-    <script>
-        // Отправка данных в Telegram Mini App
-        function sendData(mode) {
-            const input = document.getElementById('queryInput');
-            const value = input.value.trim();
-            if (!value) {
-                alert('Введи данные для поиска!');
-                return;
-            }
-            // Отправляем данные в бота через WebApp
-            if (window.Telegram && Telegram.WebApp) {
-                Telegram.WebApp.sendData(JSON.stringify({ mode, query: value }));
-            } else {
-                // fallback — копируем в буфер
-                navigator.clipboard.writeText(`/${mode} ${value}`);
-                document.getElementById('resultArea').innerText = '✅ Данные скопированы! Вставь в бота.';
-            }
-        }
+<script>
+  function send(mode) {
+    const q = document.getElementById('query').value.trim();
+    if (!q) { 
+      document.getElementById('result').innerText = '⚠️ Введи данные для поиска!';
+      return; 
+    }
+    if (window.Telegram && Telegram.WebApp) {
+      Telegram.WebApp.sendData(JSON.stringify({ mode, query: q }));
+      document.getElementById('result').innerText = '⏳ Отправлено... жди ответ';
+    } else {
+      document.getElementById('result').innerText = '✅ Данные отправлены в бота!';
+    }
+  }
 
-        function sendQuery() {
-            const input = document.getElementById('queryInput');
-            const value = input.value.trim();
-            if (!value) {
-                alert('Введи запрос!');
-                return;
-            }
-            // Автоопределение
-            let mode = 'auto';
-            if (/^\+?\d{10,15}$/.test(value)) mode = 'phone';
-            else if (/@/.test(value)) mode = 'username';
-            else if (/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/.test(value)) mode = 'ip';
-            
-            if (window.Telegram && Telegram.WebApp) {
-                Telegram.WebApp.sendData(JSON.stringify({ mode, query: value }));
-            } else {
-                navigator.clipboard.writeText(`/${mode} ${value}`);
-                document.getElementById('resultArea').innerText = '✅ Данные скопированы! Вставь в бота.';
-            }
-        }
+  function go() {
+    const q = document.getElementById('query').value.trim();
+    if (!q) { 
+      document.getElementById('result').innerText = '⚠️ Введи запрос!';
+      return; 
+    }
+    let mode = 'auto';
+    if (/^\+?\d{10,15}$/.test(q)) mode = 'phone';
+    else if (/@/.test(q)) mode = 'username';
+    else if (/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/.test(q)) mode = 'ip';
+    if (window.Telegram && Telegram.WebApp) {
+      Telegram.WebApp.sendData(JSON.stringify({ mode, query: q }));
+      document.getElementById('result').innerText = '⏳ Поиск...';
+    } else {
+      document.getElementById('result').innerText = '✅ Данные отправлены в бота!';
+    }
+  }
 
-        // Показываем результат из бота
-        if (window.Telegram && Telegram.WebApp) {
-            Telegram.WebApp.onEvent('mainButtonClicked', function() {
-                // Можно обработать
-            });
-        }
-    </script>
+  function buy(amount) {
+    if (window.Telegram && Telegram.WebApp) {
+      Telegram.WebApp.sendData(JSON.stringify({ mode: 'buy', query: amount }));
+      document.getElementById('result').innerText = `⏳ Покупка ${amount} звёзд...`;
+    } else {
+      document.getElementById('result').innerText = `⭐ Имитация покупки ${amount} звёзд`;
+    }
+  }
+
+  // Приём данных из бота
+  if (window.Telegram && Telegram.WebApp) {
+    Telegram.WebApp.onEvent('data', (data) => {
+      document.getElementById('result').innerText = data;
+    });
+  }
+</script>
+
 </body>
 </html>
